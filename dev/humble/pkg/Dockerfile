@@ -1,27 +1,27 @@
 ################################################################################
-# There are two places where your actions are needed in this Dockerfile.
+# There are three places where your actions are needed in this Dockerfile.
 # These are marked with the label `ACTIONS_NEEDED`.
 # After you are done with those:
 #
-# Pull the robetarme humble bridge base image with
+# Pull the robetarme humble base image with
 # `docker login registry.gitlab.com`
-# `docker pull registry.gitlab.com/certh-iti-robotics-lab/robetarme/robetarme/ros1-humble-bridge:base`
+# `docker pull registry.gitlab.com/certh-iti-robotics-lab/robetarme/robetarme/ros2-humble:base`
 #
-# Then build this Dockefile with
+# Then build this Dockerfile with
 # `docker compose build`,
 #
 # and run it with
 # `docker compose up -d`.
 #
-# Then copy the `install` directory under /home/${USER}/ros2_ws/ located at the
-# container to the host with
-# `docker cp ros2_humble_xy_bridge_container:/home/robetarme_user/ros2_ws/install/ ros2_ws_install`
-# ** where the string immediately after "docker cp" is the one specified in the `docker-compose.yml` file under
-# services/ros1_humble_bridge_ros2_humble_xy/container_name.
-# Reference: https://github.com/moby/moby/issues/25245#issuecomment-750336840
+# Then gain access to the container with
+# `docker attach ros2_humble_xy_development_container`,
+# ** where the string after "attach" is the one specified in the `docker-compose.yml` file under
+# services/ros2_humble_xy_development/container_name.
+#
+# Then simply launch your ROS 2 humble packages.
 ################################################################################
 
-FROM registry.gitlab.com/certh-iti-robotics-lab/robetarme/robetarme/ros1-humble-bridge:base
+FROM registry.gitlab.com/certh-iti-robotics-lab/robetarme/robetarme/ros2-humble:base
 ARG USER=robetarme_user
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -38,9 +38,6 @@ ARG USER=robetarme_user
     #rm -rf /var/lib/apt/lists/*
 # ------------------------------------------------------------------------------
 
-################################################################################
-# ROS 2 packages
-################################################################################
 
 # ------------------------------------------------------------------------------
 # Place ROS 2 packages into /home/${USER}/ros2_ws workspace and colcon build
@@ -69,8 +66,23 @@ COPY --chown=${USER}:${USER} ros2_ws/src/ /home/${USER}/ros2_ws/src/
 USER ${USER}
 RUN cd /home/${USER}/ros2_ws                                                && \
     source /opt/ros/humble/setup.bash                                       && \
-    time colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
+    colcon build                                                            && \
+    source /home/${USER}/ros2_ws/install/local_setup.bash
 USER root
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Bind mount/shared directory between container and host
+# https://docs.docker.com/storage/bind-mounts/
+RUN mkdir /home/${USER}/shared
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Entrypoint stuff
+# ------------------------------------------------------------------------------
+COPY --chown=${USER}:${USER} pkg/entrypointd.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 # ------------------------------------------------------------------------------
 
 WORKDIR /home/${USER}

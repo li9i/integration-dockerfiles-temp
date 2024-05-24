@@ -8,8 +8,8 @@ services:
   # ACTIONS_NEEDED
   ros1_humble_bridge_ros_noetic_92:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../..
+      dockerfile: opt/bridge/Dockerfile
 
     # ACTIONS_NEEDED
     # The image's name should correspond to the name of the main image that

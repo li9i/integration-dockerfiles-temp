@@ -13,11 +13,11 @@
 # and run it with
 # `docker compose up -d`.
 #
-# Then copy the `install` directory under /home/${USER}/ros1_ws/ located at the
+# Then copy the `install` directory under /home/${USER}/ros2_ws/ located at the
 # container to the host with
-# `docker cp ros_noetic_xy_bridge_container:/home/robetarme_user/ros1_ws/install/ ros1_ws_install`
+# `docker cp ros2_humble_xy_bridge_container:/home/robetarme_user/ros2_ws/install/ ros2_ws_install`
 # ** where the string immediately after "docker cp" is the one specified in the `docker-compose.yml` file under
-# services/ros_noetic_xy_bridge_container/container_name.
+# services/ros1_humble_bridge_ros2_humble_xy/container_name.
 # Reference: https://github.com/moby/moby/issues/25245#issuecomment-750336840
 ################################################################################
 
@@ -38,39 +38,20 @@ ARG USER=robetarme_user
     #rm -rf /var/lib/apt/lists/*
 # ------------------------------------------------------------------------------
 
-################################################################################
-# ROS noetic packages
-################################################################################
-
-# ------------------------------------------------------------------------------
-# Place ROS packages into /home/${USER}/ros1_ws workspace and colcon build
-# ------------------------------------------------------------------------------
-# ACTIONS_NEEDED
-# COPY the src/ directory of your host's ROS workspace into the container's
-# /home/${USER}/catkin_ws/src/ with `COPY --chown=${USER}:${USER}`. If a package
-# uses custom interfaces then THE WORKSPACE MUST INCLUDE THE PACKAGES OF THE
-# CUSTOM INTERFACES. The workspace must reside on the host alongside this
-# Dockerfile, e.g. if this Dockerfile is at /path/Dockerfile then
-# $ ls /path
-#   Dockerfile catkin_ws
-# The same applies to any other directory you want access to in the container.
-# The following line is indicative and should be replaced by you.
-# CAUTION: leave trailing slashes as-is
-COPY --chown=${USER}:${USER} catkin_ws/src/ /home/${USER}/ros1_ws/src/
-# ------------------------------------------------------------------------------
-
-
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Do not modify below this line
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 # ------------------------------------------------------------------------------
-# colcon build ROS noetic packages
+# COPY the src/ directory of your host's ROS 2 workspace into the container
+COPY --chown=${USER}:${USER} ros2_ws/src/ /home/${USER}/ros2_ws/src/
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# colcon build ROS 2 humble packages
 USER ${USER}
-RUN cd /home/${USER}/ros1_ws                                                && \
-    unset ROS_DISTRO                                                        && \
-    grep -r c++11 | grep CMakeLists | cut -f 1 -d ':' | \
-      xargs sed -i -e 's|std=c++11|std=c++17|g'                             && \
+RUN cd /home/${USER}/ros2_ws                                                && \
+    source /opt/ros/humble/setup.bash                                       && \
     time colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
 USER root
 # ------------------------------------------------------------------------------
