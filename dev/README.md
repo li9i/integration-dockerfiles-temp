@@ -10,23 +10,25 @@ This repository holds dockerfiles necessary for the development of ROS noetic an
 $ROBETARME_DOCKER_DEV_DIR/
 ├── noetic/
 │   ├── catkin_ws/src
-│   ├── opt/bridge/
-│   │   ├── docker-compose.yml
-│   │   └── Dockerfile
-│   ├── pkg/
-│   │   ├── docker-compose.yml
-│   │   ├── Dockerfile
-│   │   └── entrypointd.sh    
+│   ├── docker/
+│   │   ├── main_pkg/
+│   │   │   ├── docker-compose.yml
+│   │   │   ├── Dockerfile
+│   │   │   └── entrypointd.sh  
+│   │   └── bridge/
+│   │       ├── docker-compose.yml
+│   │       └── Dockerfile  
 │   └── shared-ros-noetic-xy
 └── humble/
     ├── ros2_ws/src
-    ├── opt/bridge/
-    │   ├── docker-compose.yml
-    │   └── Dockerfile
-    ├── pkg/
-    │   ├── docker-compose.yml
-    │   ├── Dockerfile
-    │   └── entrypointd.sh    
+    ├── docker/
+    │   ├── main_pkg/
+    │   │   ├── docker-compose.yml
+    │   │   ├── Dockerfile
+    │   │   └── entrypointd.sh  
+    │   └── bridge/
+    │       ├── docker-compose.yml
+    │       └── Dockerfile   
     └── shared-ros2-humble-mn
 ```
 
@@ -52,19 +54,19 @@ We find [this section](https://docs.docker.com/engine/install/ubuntu/#install-us
 
 
 
-## You are developing a ROS noetic package
+## You are developing ROS noetic packages
 
-- Place your package under `$ROBETARME_DOCKER_DEV_DIR/noetic/catkin_ws/src` (see [Directory structure](#directory-structure))
-- Follow the instructions in the `Dockerfile` and `docker-compose.yml` files under `ROBETARME_DOCKER_DEV_DIR/noetic/pkg`
+- Place your packages under `$ROBETARME_DOCKER_DEV_DIR/noetic/catkin_ws/src` (see [Directory structure](#directory-structure))
+- Follow the instructions in the `Dockerfile` and `docker-compose.yml` files under `ROBETARME_DOCKER_DEV_DIR/noetic/docker/main_pkg`
 
-**Should your package communicate with a ROS 2 humble package via custom interfaces** follow the instructions in the `Dockerfile` and `docker-compose.yml` files under `$ROBETARME_DOCKER_DEV_DIR/noetic/opt/bridge`.
+**Should your package communicate with a ROS 2 humble package via custom interfaces** follow the instructions in the `Dockerfile` and `docker-compose.yml` files under `$ROBETARME_DOCKER_DEV_DIR/noetic/docker/bridge`.
 
-## You are developing a ROS 2 humble package
+## You are developing ROS 2 humble packages
 
-- Place your package under `$ROBETARME_DOCKER_DEV_DIR/humble/ros2_ws/src` (see [Directory structure](#directory-structure)) 
-- Follow the instructions in the `Dockerfile` and `docker-compose.yml` files under `$ROBETARME_DOCKER_DEV_DIR/humble`
+- Place your packages under `$ROBETARME_DOCKER_DEV_DIR/humble/ros2_ws/src` (see [Directory structure](#directory-structure)) 
+- Follow the instructions in the `Dockerfile` and `docker-compose.yml` files under `$ROBETARME_DOCKER_DEV_DIR/humble/docker/main_pkg`
 
-**Should your package communicate with a ROS 2 humble package via custom interfaces** follow the instructions in the `Dockerfile` and `docker-compose.yml` files under `$ROBETARME_DOCKER_DEV_DIR/humble/opt/bridge`.
+**Should your package communicate with a ROS 2 humble package via custom interfaces** follow the instructions in the `Dockerfile` and `docker-compose.yml` files under `$ROBETARME_DOCKER_DEV_DIR/humble/docker/bridge`.
 
 ## You are developing something else
 You shouldn't be developing something else! This incident will be reported.

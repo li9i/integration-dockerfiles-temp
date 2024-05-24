@@ -79,7 +79,7 @@ RUN mkdir /home/${USER}/shared
 # ------------------------------------------------------------------------------
 # Entrypoint stuff
 # ------------------------------------------------------------------------------
-COPY --chown=${USER}:${USER} pkg/entrypointd.sh /entrypoint.sh
+COPY --chown=${USER}:${USER} docker/main_pkg/entrypointd.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 # ------------------------------------------------------------------------------
