@@ -1,0 +1,8 @@
+prefix=/home/robetarme_user/ros1_ws/install/ros1_talker
+
+Name: ros1_talker
+Description: Description of ros1_talker
+Version: 1.0.1
+Cflags: -I${prefix}/include
+Libs: 
+Requires: roscpp std_msgs custom_interfaces_ros1_pkg

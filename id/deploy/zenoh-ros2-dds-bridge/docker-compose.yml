@@ -1,0 +1,28 @@
+services:
+  zenoh_ros2_dds_bridge_deployment:
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: registry.gitlab.com/certh-iti-robotics-lab/robetarme/robetarme/zenoh-ros2-dds-bridge:deployment
+
+    container_name: zenoh_ros2_dds_bridge_deployment_container
+
+    stdin_open: true
+    tty: true
+    network_mode: "host"
+    ipc: host
+
+    #privileged: True
+
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_DRIVER_CAPABILITIES=all
+
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+    user: ${USERNAME:-robetarme_user}

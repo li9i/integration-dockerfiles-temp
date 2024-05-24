@@ -1,0 +1,62 @@
+services:
+  # ACTIONS_NEEDED
+  ros2_humble_9f_deployment:
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # ACTIONS_NEEDED
+    image: registry.gitlab.com/certh-iti-robotics-lab/robetarme/robetarme/ros2-humble-9f:deployment
+
+    # ACTIONS_NEEDED
+    container_name: ros2_humble_9f_deployment_container
+
+    stdin_open: true
+    tty: true
+    network_mode: "host"
+    ipc: host
+
+    #privileged: True
+
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_DRIVER_CAPABILITIES=all
+
+    volumes:
+
+      # Bind mount in docker, long form
+      # https://docs.docker.com/storage/bind-mounts/
+      - type: bind
+        # ACTIONS_NEEDED
+        source: ./shared-ros2-humble-9f
+        target: /home/robetarme_user/shared
+
+      # We want to have the same situation as in the developer images:
+      # we want to be able to modify source code in runtime in the container
+      # and that code to persist on the host so that we don't build the image
+      # with the modifications each time. However, here we do not (or might not)
+      # have access to the workspace, which might anyway exist in the container
+      # itself. The bind mount overwrites from host to container, so we need the
+      # reverse: a mount from container to host. We do this with the options
+      # provided by the first two links. The third link specifies the exact
+      # compose syntax (the first two are incomplete
+      # https://forums.docker.com/t/exposing-container-folder-to-host-and-not-the-reverse/98900
+      # https://stackoverflow.com/a/52167722/5297684
+      # https://stackoverflow.com/a/48264415/5297684
+      - ros2_ws_volume:/home/robetarme_user/ros2_ws/src
+
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+    #user: ${USERNAME:-robetarme_user}
+
+volumes:
+
+  ros2_ws_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./shared-ros2_ws/src

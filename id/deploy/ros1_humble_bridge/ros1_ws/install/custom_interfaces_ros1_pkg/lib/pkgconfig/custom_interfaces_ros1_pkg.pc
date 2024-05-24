@@ -1,0 +1,8 @@
+prefix=/home/robetarme_user/ros1_ws/install/custom_interfaces_ros1_pkg
+
+Name: custom_interfaces_ros1_pkg
+Description: Description of custom_interfaces_ros1_pkg
+Version: 1.0.1
+Cflags: -I${prefix}/include
+Libs: 
+Requires: roscpp std_msgs geometry_msgs

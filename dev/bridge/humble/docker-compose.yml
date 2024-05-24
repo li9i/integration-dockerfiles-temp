@@ -1,0 +1,41 @@
+################################################################################
+# There are three places where your actions are needed in this compose file
+# These are marked with the label `ACTIONS_NEEDED`.
+################################################################################
+
+services:
+
+  # ACTIONS_NEEDED
+  ros1_humble_bridge_ros2_humble_9f:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # ACTIONS_NEEDED
+    # The image's name should correspond to the name of the main image that
+    # holds your package, in this case
+    # registry.gitlab.com/certh-iti-robotics-lab/robetarme/robetarme/ros-humble-9f
+    # tagged by "bridge"
+    image: registry.gitlab.com/certh-iti-robotics-lab/robetarme/robetarme/ros2-humble-9f:bridge
+
+    # ACTIONS_NEEDED
+    # The container's name should correspond to the name of the image that
+    # holds your package (in this case ros2_humble_9f),
+    # suffixed by "_bridge_container"
+    container_name: ros2_humble_9f_bridge_container
+
+    tty: true
+    network_mode: "host"
+    ipc: host
+
+    #privileged: True
+
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+    user: ${USERNAME:-robetarme_user}

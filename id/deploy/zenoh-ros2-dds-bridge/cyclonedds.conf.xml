@@ -1,0 +1,37 @@
+<!-- https://github.com/eclipse-zenoh/zenoh-plugin-ros2dds/issues/77 -->
+<CycloneDDS
+  xmlns="https:://cdds.io/config"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema=instance"
+  xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd"
+  >
+<Domain Id="any">
+  <General>
+    <Interfaces>
+      <!--<NetworkInterface address="160.40.49.193" multicast="true"/>-->
+    </Interfaces>
+    <!--<MaxMessageSize>1450B</MaxMessageSize>-->
+    <!--<EnableMulticastLoopback>true</EnableMulticastLoopback>-->
+    <!--<DontRoute>true</DontRoute>-->
+  </General>
+
+  <!--
+  <Internal>
+    <SocketReceiveBufferSize min="10MB"/>
+    <SocketSendBufferSize    min="10MB"/>
+    <Watermarks>
+      <WhcHigh>500kB</WhcHigh>
+    </Watermarks>
+  </Internal>
+  -->
+
+  <!--
+    <Discovery>
+    <ParticipantIndex>auto</ParticipantIndex>
+    <Peers>
+    <Peer Address="160.40.55.40"/>
+    </Peers>
+    </Discovery>
+  -->
+
+  </Domain>
+</CycloneDDS>

@@ -1,0 +1,5 @@
+- `ACTIONS_REQUIRED` at `zenoh_config.json5`
+- Fill in the machine's IP  in `cyclonedds.conf.xml`
+- Reminder: everything that runs in the same machine has the same `ROS_DOMAIN_ID` but every machine must have a different `ROS_DOMAIN_ID`
+- Reminder: one `zenoh-ros2-dds-bridge` per machine, one `ROS_DOMAIN_ID` per machine
+- Reminder: the `ROS_DOMAIN_ID` is filled in at `.bashrc` and `zenoh_config.json5`
