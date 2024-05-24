@@ -64,7 +64,7 @@ services:
       # - the image already has the source code: you don't need to
       #   `colcon build` upon entry to the container
       # - build/, install/, and log/ do not overlap between host and container
-      - ./ros2_ws/src:/home/robetarme_user/ros2_ws/src:rw
+      #- ./ros2_ws/src:/home/robetarme_user/ros2_ws/src:rw
 
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /tmp/.docker.xauth:/tmp/.docker.xauth:rw

@@ -1,5 +1,5 @@
 ################################################################################
-# There are three places where your actions are needed in this Dockerfile.
+# There are places where your actions are needed in this Dockerfile.
 # These are marked with the label `ACTIONS_NEEDED`.
 # After you are done with those:
 #
@@ -38,28 +38,25 @@ ARG USER=robetarme_user
     #rm -rf /var/lib/apt/lists/*
 # ------------------------------------------------------------------------------
 
-
-# ------------------------------------------------------------------------------
-# Place ROS 2 packages into /home/${USER}/ros2_ws workspace and colcon build
-# ------------------------------------------------------------------------------
 # ACTIONS_NEEDED
-# COPY the src/ directory of your host's ROS 2 workspace into the container's
-# /home/${USER}/ros2_ws/src/ with `COPY --chown=${USER}:${USER}`. If a package
-# uses custom interfaces then THE WORKSPACE MUST INCLUDE THE PACKAGES OF THE
-# CUSTOM INTERFACES. The workspace must reside on the host alongside this
-# Dockerfile, e.g. if this Dockerfile is at /path/Dockerfile then
-# $ ls /path
-#   Dockerfile ros2_ws
-# The same applies to any other directory you want access to in the container.
-# The following line is indicative and should be replaced by you.
-# CAUTION: leave trailing slashes as-is
-COPY --chown=${USER}:${USER} ros2_ws/src/ /home/${USER}/ros2_ws/src/
 # ------------------------------------------------------------------------------
-
+# Place your ROS 2 packages into the host's ros2_ws/src directory
+# i.e. $PWD/../../ros2_ws/src. This directory will be copied verbatim into
+# the image.
+#
+# CAUTION! Anything else you `COPY` must be specified with
+# `COPY --chown=${USER}:${USER} source destination`
+# ------------------------------------------------------------------------------
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Do not modify below this line
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+# ------------------------------------------------------------------------------
+# COPY the src/ directory of your host's ROS 2 workspace into the container
+# ------------------------------------------------------------------------------
+COPY --chown=${USER}:${USER} ros2_ws/src/ /home/${USER}/ros2_ws/src/
+# ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
 # colcon build ROS 2 humble packages
