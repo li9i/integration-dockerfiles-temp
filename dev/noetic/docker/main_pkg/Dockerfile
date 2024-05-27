@@ -69,9 +69,12 @@ USER root
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
-# Bind mount/shared directory between container and host
+# Bind mount/shared directory between container and host;
+# robetarme_user is owner
 # https://docs.docker.com/storage/bind-mounts/
+USER ${USER}
 RUN mkdir /home/${USER}/shared
+USER root
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
