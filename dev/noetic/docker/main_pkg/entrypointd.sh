@@ -67,7 +67,7 @@ USER=robetarme_user
 chown --dereference $USER "/proc/$$/fd/1" "/proc/$$/fd/2" || :
 
 # In case the host user's uid is not equal to the container's user's uid (1000)
-# the bind mount `/home/$USER/ros2_ws/src` (see docker-compose.yml:volumes)
+# the bind mount `/home/$USER/catkin_ws/src` (see docker-compose.yml:volumes)
 # is owned by the host's user. If we transfer ownership to the container's user
 # then we simply shuffle the problem. Give others rwX rights to mitigate the
 # bulk of this discrepancy.

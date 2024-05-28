@@ -15,6 +15,7 @@
 #
 # Then gain access to the container with
 # `docker attach ros2_humble_xy_development_container`,
+# and `docker exec -it --user robetarme_user ros2_humble_xy_development_container bash`
 # ** where the string after "attach" is the one specified in the `docker-compose.yml` file under
 # services/ros2_humble_xy_development/container_name.
 #
